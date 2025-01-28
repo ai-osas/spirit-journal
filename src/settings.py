@@ -1,3 +1,4 @@
+# src/settings.py
 from pathlib import Path
 from neo4j import GraphDatabase
 from decouple import config
@@ -47,9 +48,15 @@ INSTALLED_APPS = [
     # Internal apps - End
 
     'rest_framework',
+    'rest_framework.authtoken',
+
+    'rest_framework_simplejwt',
+
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', # Third party middleware. Corsheaders
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -156,6 +163,12 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ]
+}
+
 SITE_ID = 1
 
 # Provider specific settings
@@ -170,10 +183,64 @@ SOCIALACCOUNT_PROVIDERS = {
             'profile',
             'email',
         ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
     }
 }
 
 AUTH_USER_MODEL = 'authentication.User'
+
+
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = 'spirit-auth'
+JWT_AUTH_REFRESH_COOKIE = 'spirit-refresh-token'
+
+
+SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
+SOCIALACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+# JWT Settings
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': True,
+}
+
+# Social Auth settings
+SOCIALACCOUNT_ADAPTER = 'authentication.adapters.CustomSocialAccountAdapter'
+ACCOUNT_ADAPTER = 'authentication.adapters.CustomAccountAdapter'
+
+GOOGLE_OAUTH_CALLBACK_URL = 'http://localhost:8000/api/auth/google/callback/'
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React frontend
+    "http://localhost:8000",  # Django backend
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+# Additional CORS settings that might help
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+LOGIN_REDIRECT_URL = 'http://localhost:3000/journal'
+
