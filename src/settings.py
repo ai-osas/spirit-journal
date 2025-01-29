@@ -4,7 +4,7 @@ from neo4j import GraphDatabase
 from decouple import config
 from neomodel import db
 from neomodel import config as neo_config
-
+from urllib.parse import urlparse
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,7 +19,7 @@ SECRET_KEY = 'django-insecure-5u=1hp5k_(8s^ft&6cumi*b7dyj0x(u^-tppbm#a*hndjw9u1p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".vercel.app", "localhost",]
 
 
 # Application definition
@@ -85,7 +85,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'src.wsgi.application'
+WSGI_APPLICATION = 'src.wsgi.app'
 
 
 # Database
@@ -102,14 +102,16 @@ neo_config.FORCE_SSL = True
 # my_driver = GraphDatabase().driver(config('GRAPH_CONNECTION_URL'), auth=('neo4j', config('GRAPH_PASSWORD')))
 # db.set_connection(driver=my_driver)
 
+tmpPostgres = urlparse(config("DATABASE_URL"))
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT'),
+        'NAME': tmpPostgres.path.replace('/', ''),
+        'USER': tmpPostgres.username,
+        'PASSWORD': tmpPostgres.password,
+        'HOST': tmpPostgres.hostname,
+        'PORT': 5432,
     }
 }
 
