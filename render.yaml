@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: spirit-journal
+    runtime: python
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate
+    startCommand: gunicorn src.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: src.settings
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: GRAPH_CONNECTION_URL
+        sync: false
+      - key: GRAPH_PASSWORD
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_OAUTH_CALLBACK_URL
+        sync: false
+      - key: LOGIN_REDIRECT_URL
+        sync: false
+      - key: REACT_FRONTEND
+        sync: false
+      - key: DJANGO_BACKEND
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+    autoDeploy: true
