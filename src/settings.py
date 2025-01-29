@@ -212,7 +212,7 @@ SIMPLE_JWT = {
 SOCIALACCOUNT_ADAPTER = 'authentication.adapters.CustomSocialAccountAdapter'
 ACCOUNT_ADAPTER = 'authentication.adapters.CustomAccountAdapter'
 
-GOOGLE_OAUTH_CALLBACK_URL = 'http://localhost:8000/api/auth/google/callback/'
+GOOGLE_OAUTH_CALLBACK_URL = config('GOOGLE_OAUTH_CALLBACK_URL')
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React frontend
     "http://localhost:8000",  # Django backend
@@ -242,5 +242,5 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-LOGIN_REDIRECT_URL = 'http://localhost:3000/journal'
+LOGIN_REDIRECT_URL = config('LOGIN_REDIRECT_URL')
 
