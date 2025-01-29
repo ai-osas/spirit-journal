@@ -57,6 +57,8 @@ class GoogleLoginView(SocialLoginView):
     def post(self, request, *args, **kwargs):
         print("\n=== GoogleLoginView.post() ===")
         print("GoogleLoginView post method called")
+
+
         
         try:
             print("\nRequest details in post:")
@@ -80,7 +82,7 @@ class GoogleLoginView(SocialLoginView):
                     redirect_path = request.session.get('next_url', '/')
                     print(f"Redirect path: {redirect_path}")
                     
-                    frontend_url = f"http://localhost:3000{redirect_path}"
+                    frontend_url = f"{settings.REACT_FRONTEND}{redirect_path}"
                     params = {
                         'access_token': str(refresh.access_token),
                         'refresh_token': str(refresh)
@@ -113,6 +115,11 @@ def google_oauth_redirect(request):
     next_path = request.GET.get('from', '/')
     print(f"Next path: {next_path}")
     request.session['next_url'] = next_path
+
+    # Add debug prints
+    print("DEBUG SETTINGS:")
+    print(f"Direct setting: {settings.GOOGLE_OAUTH_CALLBACK_URL}")
+    print(f"From SOCIALACCOUNT_PROVIDERS: {settings.SOCIALACCOUNT_PROVIDERS['google']}")
     
     params = {
         'client_id': settings.SOCIALACCOUNT_PROVIDERS['google']['APP']['client_id'],

@@ -20,7 +20,7 @@ SECRET_KEY = 'django-insecure-5u=1hp5k_(8s^ft&6cumi*b7dyj0x(u^-tppbm#a*hndjw9u1p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".vercel.app", "127.0.0.1", ".onrender.com"]
+ALLOWED_HOSTS = [".vercel.app", "127.0.0.1", ".onrender.com", "localhost"]
 
 
 # Application definition
@@ -221,10 +221,13 @@ SIMPLE_JWT = {
 SOCIALACCOUNT_ADAPTER = 'authentication.adapters.CustomSocialAccountAdapter'
 ACCOUNT_ADAPTER = 'authentication.adapters.CustomAccountAdapter'
 
+REACT_FRONTEND = config('REACT_FRONTEND')
+DJANGO_BACKEND = config('DJANGO_BACKEND')
+
 GOOGLE_OAUTH_CALLBACK_URL = config('GOOGLE_OAUTH_CALLBACK_URL')
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React frontend
-    "http://localhost:8000",  # Django backend
+    REACT_FRONTEND,  # React frontend
+    DJANGO_BACKEND,  # Django backend
 ]
 
 CORS_ALLOW_CREDENTIALS = True
