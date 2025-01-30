@@ -110,6 +110,11 @@ neo_config.DATABASE_URL = (
 # Force SSL/TLS for Aura
 neo_config.FORCE_SSL = True
 
+NEO4J_URI = config('GRAPH_CONNECTION_URL')
+NEO4J_USER = 'neo4j'
+NEO4J_PASSWORD = config('GRAPH_PASSWORD')
+
+
 # my_driver = GraphDatabase().driver(config('GRAPH_CONNECTION_URL'), auth=('neo4j', config('GRAPH_PASSWORD')))
 # db.set_connection(driver=my_driver)
 
