@@ -197,6 +197,8 @@ SOCIALACCOUNT_PROVIDERS = {
             'profile',
             'email',
         ],
+        
+        
     }
 }
 
